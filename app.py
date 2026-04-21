@@ -19,7 +19,7 @@ app.add_middleware(
 
 MANIFEST = {
     "id": "org.dubstream.ultra",
-    "version": "11.0.0",
+    "version": "1.0",
     "name": "DUBSTREAM ⚡",
     "description": "Filmes e Séries Dublados com Player Pro",
     "resources": ["stream"],
