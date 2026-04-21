@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUBSTREAM ⚡ Player</title>
+    <style>
+        /* Estética Cinema Dark */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: #000; 
+            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #player-wrapper { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            position: relative;
+        }
+
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            z-index: 10;
+            background: #000;
+        }
+
+        /* Overlay de Carregamento para não ficar tela preta vazia */
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid #e50914; /* Vermelho Netflix Style */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Marca d'água discreta do seu Addon */
+        #watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+            z-index: 20;
+            pointer-events: none; /* Não atrapalha o clique no vídeo */
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-wrapper">
+        <div id="loader">
+            <div class="spinner"></div>
+            <p>Conectando ao DubStream ⚡...</p>
+        </div>
+
+        <div id="watermark">DUBSTREAM ⚡</div>
+
+        <iframe 
+            id="mega-player" 
+            src="" 
+            allow="fullscreen; autoplay; picture-in-picture; encrypted-media" 
+            allowfullscreen
+            onload="hideLoader()">
+        </iframe>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const videoUrl = params.get('url');
+            
+            if (videoUrl) {
+                // Injeta a URL no Iframe
+                document.getElementById('mega-player').src = videoUrl;
+            } else {
+                document.body.innerHTML = "<div style='color:white; text-align:center; margin-top:20%'><h1>⚠️ Erro: Link não encontrado</h1></div>";
+            }
+        });
+
+        // Função para sumir o carregando quando o vídeo "bater" no servidor
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
